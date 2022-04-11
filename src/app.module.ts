@@ -3,12 +3,27 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from '../config/configuration';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+      validationSchema: Joi.object({
+        server: Joi.object({
+          debug: Joi.boolean().default(false),
+          port: Joi.number().default(3000),
+          base_url: Joi.string().default('/'),
+          basic_auth_username: Joi.string(),
+          basic_auth_password: Joi.string(),
+          api_key: [Joi.string(), Joi.number()],
+        }),
+      }),
+      validationOptions: {
+        allowUnknown: true,
+        abortEarly: true,
+      },
       //envFilePath: ['.env.dev', '.env.dev.prod'],
     }),
   ],
