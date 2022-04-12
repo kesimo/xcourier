@@ -1,7 +1,10 @@
 server:
   #debug: true
-  port: 3000
+  port: 2000
   base_url: '/base'
   basic_auth_username: 'root'
   basic_auth_password: 'root'
   api_key: 'key12432413'
+email:
+  host: test.com
+  port: 2400

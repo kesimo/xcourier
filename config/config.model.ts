@@ -1,32 +1,26 @@
 import {
   IsBoolean,
+  IsDefined,
   IsNotEmpty,
+  IsNotEmptyObject,
   IsNumber,
   IsString,
+  IsUrl,
   Max,
   Min,
   ValidateNested,
-  validateSync,
 } from 'class-validator';
-import { plainToClass, Type } from 'class-transformer';
-
-export class Configuration {
-  //@ValidateNested()
-  //@Type(() => ServerConfiguration)
-  @IsNumber()
-  server: string;
-  //@ValidateNested()
-  email: EmailConfiguration;
-}
+import { Type } from 'class-transformer';
 
 export class ServerConfiguration {
   @IsNotEmpty()
   @IsBoolean()
   debug: boolean;
+  @IsNotEmpty()
   @IsNumber()
   @Min(1)
   @Max(63000)
-  port: number;
+  port = 3000;
   @IsString()
   base_url = '/';
   @IsString()
@@ -38,33 +32,44 @@ export class ServerConfiguration {
 }
 
 export class EmailConfiguration {
+  @IsString()
+  @IsNotEmpty()
+  @IsUrl()
   host: string;
+  @IsNumber()
+  @Min(1)
+  @Max(63000)
   port: number;
+  @IsNotEmpty()
+  @IsBoolean()
   ignore_tls: boolean;
+  @IsNotEmpty()
+  @IsBoolean()
   secure: boolean;
+  @IsNotEmpty()
+  @IsBoolean()
   require_tls: boolean;
+  @IsNotEmpty()
+  @IsString()
   user: string;
+  @IsNotEmpty()
+  @IsString()
   password: string;
+  @IsNotEmpty()
+  @IsString()
   default_from: string;
+  @IsNotEmpty()
+  @IsString()
   default_name: string;
 }
 
-export function validate(config: Record<string, unknown>) {
-  //console.log(config);
-  const validatedConfig = plainToClass(Configuration, config, {
-    enableImplicitConversion: true,
-  });
-  //console.log(config);
-  console.log('validatedConfig: ', validatedConfig);
-  const errors = validateSync(validatedConfig, {
-    skipMissingProperties: true,
-  });
-  console.log('errors: ', errors);
-
-  if (errors.length > 0) {
-    //todo change error type and logging to console
-    console.log('validation errors: ', errors);
-    throw new Error(errors.toString());
-  }
-  return validatedConfig;
+export class Configuration {
+  @IsDefined()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => ServerConfiguration)
+  server: ServerConfiguration;
+  @ValidateNested()
+  @Type(() => EmailConfiguration)
+  email: EmailConfiguration;
 }

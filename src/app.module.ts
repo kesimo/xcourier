@@ -4,7 +4,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from '../config/configuration';
 import * as Joi from 'joi';
-import { validate } from 'config/config.model';
 
 @Module({
   imports: [

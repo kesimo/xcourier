@@ -31,7 +31,7 @@ export default () => {
   //console.log(config);
   console.log('validatedConfig: ', validatedConfig);
   const errors = validateSync(validatedConfig, {
-    skipMissingProperties: true,
+    skipMissingProperties: false,
   });
   console.log('errors: ', errors);
 
