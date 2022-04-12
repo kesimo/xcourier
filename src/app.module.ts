@@ -4,13 +4,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from '../config/configuration';
 import * as Joi from 'joi';
+import { validate } from 'config/config.model';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
-      validationSchema: Joi.object({
+      //validate,
+      /* validationSchema: Joi.object({
         server: Joi.object({
           debug: Joi.boolean().default(false),
           port: Joi.number().default(3000),
@@ -19,7 +21,7 @@ import * as Joi from 'joi';
           basic_auth_password: Joi.string(),
           api_key: [Joi.string(), Joi.number()],
         }),
-      }),
+      }), */
       validationOptions: {
         allowUnknown: true,
         abortEarly: true,

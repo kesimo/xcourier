@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IConfiguration, IServerConfiguration } from 'config/config.model';
+import { Configuration, ServerConfiguration } from 'config/config.model';
 
 @Injectable()
 export class AppService {
-  protected serverConfiguration: IServerConfiguration;
+  protected serverConfiguration: ServerConfiguration;
 
   constructor(private configService: ConfigService) {
-    this.serverConfiguration =
-      this.configService.get<IServerConfiguration>('server');
+    /* this.serverConfiguration =
+      this.configService.get<ServerConfiguration>('server');
     console.log(this.serverConfiguration.port);
-    console.log(this.serverConfiguration.debug);
+    console.log(this.serverConfiguration.debug); */
   }
   getHello(): string {
     console.log(this.serverConfiguration.api_key ?? 'null');
