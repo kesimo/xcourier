@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { NotifierModule } from './modules/notifier/notifier.module';
 import configuration from '../config/configuration';
-import * as Joi from 'joi';
 import serverConfiguration from 'config/server-configuration';
 
 @Module({
@@ -15,8 +15,8 @@ import serverConfiguration from 'config/server-configuration';
         allowUnknown: true,
         abortEarly: true,
       },
-      //envFilePath: ['.env.dev', '.env.dev.prod'],
     }),
+    NotifierModule,
   ],
   controllers: [AppController],
   providers: [AppService],
