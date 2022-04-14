@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { NotifierModule } from './modules/notifier/notifier.module';
 import configuration from '../config/configuration';
 import serverConfiguration from 'config/server-configuration';
+import { MailTransmitterModule } from './modules/mail-transmitter/mail-transmitter.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import serverConfiguration from 'config/server-configuration';
       },
     }),
     NotifierModule,
+    MailTransmitterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
