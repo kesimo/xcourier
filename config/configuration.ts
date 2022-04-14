@@ -28,17 +28,12 @@ export default () => {
   const validatedConfig = plainToInstance(Configuration, config, {
     enableImplicitConversion: true,
   });
-  //console.log(config);
-  console.log('validatedConfig: ', validatedConfig);
   const errors = validateSync(validatedConfig, {
     skipMissingProperties: false,
   });
-  console.log('errors: ', errors);
 
   if (errors.length > 0) {
-    //todo change error type and logging to console
-    console.log('validation errors: ', errors);
-    throw new Error(errors.toString());
+    throw new Error('Failed to load yaml configuration... \n' + errors);
   }
   return config;
 };

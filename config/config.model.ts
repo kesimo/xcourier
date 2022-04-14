@@ -1,6 +1,7 @@
 import {
   IsBoolean,
   IsDefined,
+  IsEmail,
   IsNotEmpty,
   IsNotEmptyObject,
   IsNumber,
@@ -12,36 +13,34 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class ServerConfiguration {
-  @IsNotEmpty()
-  @IsBoolean()
-  debug: boolean;
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(1)
-  @Max(63000)
-  port = 3000;
-  @IsString()
-  base_url = '/';
-  @IsString()
-  basic_auth_username?: string;
-  @IsString()
-  basic_auth_password?: string;
-  @IsString()
-  api_key?: string;
-}
-
 export class EmailConfiguration {
-  @IsString()
-  @IsNotEmpty()
+  @IsString({
+    message: 'Email host is invalid',
+  })
+  @IsNotEmpty({
+    message: 'Email host is missing',
+  })
   @IsUrl()
   host: string;
-  @IsNumber()
-  @Min(1)
-  @Max(63000)
+  @IsNumber(
+    {},
+    {
+      message: 'Email port is not a number',
+    },
+  )
+  @Min(1, {
+    message: 'Email port is invalid',
+  })
+  @Max(63000, {
+    message: 'Email port is invalid',
+  })
   port: number;
-  @IsNotEmpty()
-  @IsBoolean()
+  @IsNotEmpty({
+    message: 'ignore_tls property is missing',
+  })
+  @IsBoolean({
+    message: 'ignore_tls property is invalid',
+  })
   ignore_tls: boolean;
   @IsNotEmpty()
   @IsBoolean()
@@ -57,6 +56,7 @@ export class EmailConfiguration {
   password: string;
   @IsNotEmpty()
   @IsString()
+  @IsEmail()
   default_from: string;
   @IsNotEmpty()
   @IsString()
@@ -66,9 +66,6 @@ export class EmailConfiguration {
 export class Configuration {
   @IsDefined()
   @IsNotEmptyObject()
-  @ValidateNested()
-  @Type(() => ServerConfiguration)
-  server: ServerConfiguration;
   @ValidateNested()
   @Type(() => EmailConfiguration)
   email: EmailConfiguration;
