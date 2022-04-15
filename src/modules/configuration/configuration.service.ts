@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {
-  Configuration,
-  EmailConfiguration,
-  EndpointConfiguration,
-} from 'config/config.model';
+import { EmailConfiguration, EndpointConfiguration } from 'config/config.model';
 import { ServerConfiguration } from 'config/server-config.model';
 
 @Injectable()
@@ -20,8 +16,6 @@ export class ConfigurationService {
       this.configService.get<EmailConfiguration>('email');
     this.endpointConfigurations =
       this.configService.get<EndpointConfiguration[]>('endpoints');
-    console.log('emailconfig:');
-    console.log(this.emailConfiguration);
   }
 
   getServerConfiguration(): ServerConfiguration {

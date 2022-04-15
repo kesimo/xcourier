@@ -89,37 +89,45 @@ export class EndpointConfiguration {
   receivers: string[];
 
   //email subject
+  @IsOptional()
   @IsString()
   subject: string;
 
   //path for custom handlebars template
   @IsString()
+  @IsOptional()
   template_path?: string;
 
   //use if template should be defined in yaml configuration as string
   @IsString()
+  @IsOptional()
   template?: string;
 
   //set to true if default template should be used (only shows timestamp, request id and raw body)
   @IsBoolean()
+  @IsOptional()
   default_template?: boolean;
 
   //send simple message with default styling
   @IsString()
+  @IsOptional()
   message?: string;
 
   //custom history entry
   @IsString()
+  @IsOptional()
   history_entry?: string;
 
   //auto retry after specified seconds
   //@future
   @IsNumber()
+  @IsOptional()
   retry?: number;
 
   //custom response status code for success
   @IsNumber()
   @Max(1000)
+  @IsOptional()
   response_code?: number;
 }
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Configuration } from 'config/config.model';
 import { ServerConfiguration } from 'config/server-config.model';
 import { ConfigurationService } from '../configuration/configuration.service';
@@ -10,14 +9,7 @@ export class NotifierService {
   protected serverConfiguration: ServerConfiguration;
   protected configuration: Configuration;
 
-  constructor(private configurationService: ConfigurationService) {
-    console.log('Notifier service mail: ');
-    console.log(configurationService.getMailConfiguration());
-    console.log('Notifier get endpoint with id 123: ');
-    console.log(configurationService.getEndpointConfiguration('123'));
-    console.log('Notifier get endpoint with id 456: ');
-    console.log(configurationService.getEndpointConfiguration('456'));
-  }
+  constructor(private configurationService: ConfigurationService) {}
 
   async sendMailNotification(
     id: string,

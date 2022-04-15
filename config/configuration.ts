@@ -29,7 +29,7 @@ export default () => {
     enableImplicitConversion: true,
   });
   const errors = validateSync(validatedConfig, {
-    skipMissingProperties: true,
+    skipMissingProperties: false,
   });
 
   if (errors.length > 0) {
