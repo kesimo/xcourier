@@ -63,6 +63,36 @@ export class EmailConfiguration {
   default_name: string;
 }
 
+export enum EndpointType {
+  query = 'query',
+  json = 'json',
+  blank = 'blank',
+}
+export class EndpointConfiguration {
+  //used for endpoint identification (/:id)
+  id: string;
+  //type of data to receive and parse
+  data_type: EndpointType;
+  //list of all email recievers
+  receivers: string[];
+  //email subject
+  subject: string;
+  //path for custom handlebars template
+  template_path?: string;
+  //use if template should be defined in yaml configuration as string
+  template?: string;
+  //set to true if default template should be used (only shows timestamp, request id and raw body)
+  default_template?: boolean;
+  //send simple message with default styling
+  message?: string;
+  //custom history entry
+  history_entry?: string;
+  //auto retry after specified seconds
+  retry?: number;
+  //custom response status code for success
+  response_code?: number;
+}
+
 export class Configuration {
   @IsDefined()
   @IsNotEmptyObject()
