@@ -3,24 +3,34 @@ import {
   Controller,
   Get,
   NotImplementedException,
+  Param,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 import { NotifierService } from './notifier.service';
 
-@Controller('notifier')
+@Controller('')
 export class NotifierController {
   constructor(private readonly notifierService: NotifierService) {}
-  @Get()
+
+  @Get('/params')
+  async sendNotificationByGetQuery(@Query() query) {
+    console.log(query);
+  }
+
+  @Get('/:customId')
   async sendNotificationGet(
+    @Param('customId') jobId: string,
     @Req() req: Express.Request,
     @Body() replacementData: any,
   ): Promise<any> {
     throw new NotImplementedException();
   }
 
-  @Post()
+  @Post('/:customId')
   async sendNotificationPush(
+    @Param('customId') jobId: string,
     @Req() req: Express.Request,
     @Body() replacementData: any,
   ): Promise<any> {
