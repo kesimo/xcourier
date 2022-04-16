@@ -1,11 +1,14 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const logger = new Logger('MAIN');
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+
   app.setGlobalPrefix(process.env.BASE_URL || '');
   app.enableCors({
     origin: '*',
