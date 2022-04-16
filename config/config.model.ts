@@ -18,33 +18,16 @@ import {
 import { Type } from 'class-transformer';
 
 export class EmailConfiguration {
-  @IsString({
-    message: 'Email host is invalid',
-  })
-  @IsNotEmpty({
-    message: 'Email host is missing',
-  })
+  @IsString()
+  @IsNotEmpty()
   @IsUrl()
   host: string;
-  @IsNumber(
-    {},
-    {
-      message: 'Email port is not a number',
-    },
-  )
-  @Min(1, {
-    message: 'Email port is invalid',
-  })
-  @Max(63000, {
-    message: 'Email port is invalid',
-  })
+  @IsNumber()
+  @Min(1)
+  @Max(63000)
   port: number;
-  @IsNotEmpty({
-    message: 'ignore_tls property is missing',
-  })
-  @IsBoolean({
-    message: 'ignore_tls property is invalid',
-  })
+  @IsNotEmpty()
+  @IsBoolean()
   ignore_tls: boolean;
   @IsNotEmpty()
   @IsBoolean()
