@@ -11,6 +11,7 @@ import { MailConfigService } from './modules/mail-transmitter/mail-config.servic
 import { WinstonModule } from 'nest-winston/dist/winston.module';
 import * as winston from 'winston';
 import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
+import { ConfigurationModule } from './modules/configuration/configuration.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
     }),
     MailerModule.forRootAsync({
       useClass: MailConfigService,
+      imports: [ConfigurationModule],
     }),
     NotifierModule,
     MailTransmitterModule,

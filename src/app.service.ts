@@ -20,10 +20,7 @@ export class AppService {
   protected serverConfiguration: ServerConfiguration;
   protected configuration: Configuration;
 
-  constructor(private configService: ConfigService) {
-    this.configuration = this.configService.get<Configuration>('email');
-    console.log(this.configuration);
-  }
+  constructor(private configService: ConfigService) {}
 
   getReportStatus(): IReportStatus {
     //console.log(this.serverConfiguration.api_key ?? 'null');

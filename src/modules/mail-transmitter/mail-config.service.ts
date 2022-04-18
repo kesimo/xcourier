@@ -2,11 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { MailerOptions, MailerOptionsFactory } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
+import { ConfigurationService } from '../configuration/configuration.service';
 
 @Injectable()
 export class MailConfigService implements MailerOptionsFactory {
-  //email configuration file with connection parameters from .env
+  //email configuration file with connection parameters from .yaml
+  constructor(private readonly configurationService: ConfigurationService) {}
   createMailerOptions(): MailerOptions {
+    console.log('createMailerOptions');
+    console.log(this.configurationService.getMailConfiguration());
     return {
       //Mail provider connection options
       transport: {
@@ -27,7 +31,9 @@ export class MailConfigService implements MailerOptionsFactory {
       // (used for replace text and url in email template)
       template: {
         dir: join(process.cwd(), 'src', 'modules', 'mail', 'mail-templates/'),
-        adapter: new HandlebarsAdapter(),
+        adapter: new HandlebarsAdapter(undefined, {
+          inlineCssEnabled: true,
+        }),
         options: {
           strict: true,
         },

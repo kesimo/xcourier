@@ -18,6 +18,9 @@ import {
 import { Type } from 'class-transformer';
 
 export class EmailConfiguration {
+  @IsOptional()
+  @IsBoolean()
+  use_smtp?: boolean;
   @IsString()
   @IsNotEmpty()
   @IsUrl()
@@ -112,6 +115,14 @@ export class EndpointConfiguration {
   @Max(1000)
   @IsOptional()
   response_code?: number;
+
+  @IsString()
+  @IsOptional()
+  linked_url?: string;
+
+  @IsString()
+  @IsOptional()
+  linked_url_tag?: string;
 }
 
 export class Configuration {
