@@ -13,6 +13,7 @@ import {
   IsUrl,
   Max,
   Min,
+  ValidateIf,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -21,29 +22,44 @@ export class EmailConfiguration {
   @IsOptional()
   @IsString()
   smtp_url?: string;
+
+  @ValidateIf((o) => o.smtp_url === undefined)
   @IsString()
   @IsNotEmpty()
   @IsUrl()
   host: string;
+
+  @ValidateIf((o) => o.smtp_url === undefined)
   @IsNumber()
   @Min(1)
   @Max(63000)
   port: number;
+
+  @ValidateIf((o) => o.smtp_url === undefined)
   @IsNotEmpty()
   @IsBoolean()
   ignore_tls: boolean;
+
+  @ValidateIf((o) => o.smtp_url === undefined)
   @IsNotEmpty()
   @IsBoolean()
   secure: boolean;
+
+  @ValidateIf((o) => o.smtp_url === undefined)
   @IsNotEmpty()
   @IsBoolean()
   require_tls: boolean;
+
+  @ValidateIf((o) => o.smtp_url === undefined)
   @IsNotEmpty()
   @IsString()
   user: string;
+
+  @ValidateIf((o) => o.smtp_url === undefined)
   @IsNotEmpty()
   @IsString()
   password: string;
+
   @IsNotEmpty()
   @IsString()
   @IsEmail()

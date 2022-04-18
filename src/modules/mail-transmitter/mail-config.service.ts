@@ -4,7 +4,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { join } from 'path';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { EmailConfiguration } from 'config/config.model';
-
+import * as nodemailer from 'nodemailer';
 @Injectable()
 export class MailConfigService implements MailerOptionsFactory {
   mailConfigurations: EmailConfiguration;
@@ -21,9 +21,11 @@ export class MailConfigService implements MailerOptionsFactory {
       this.mailConfigurations.smtp_url.length > 0
     ) {
       console.log('load smtp');
-      transportOptions = this.mailConfigurations.smtp_url;
+      transportOptions = nodemailer.createTransport(
+        this.mailConfigurations.smtp_url,
+      );
     } else {
-      transportOptions = {
+      transportOptions = nodemailer.createTransport({
         host: this.mailConfigurations.host,
         port: this.mailConfigurations.port,
         ignoreTLS: this.mailConfigurations.ignore_tls,
@@ -33,7 +35,7 @@ export class MailConfigService implements MailerOptionsFactory {
           user: this.mailConfigurations.user,
           pass: this.mailConfigurations.password,
         },
-      };
+      });
     }
     return {
       //Mail provider connection options

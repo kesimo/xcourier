@@ -6,7 +6,7 @@ import * as yaml from 'js-yaml';
 import { join } from 'path';
 import { Configuration } from './config.model';
 
-const YAML_CONFIG_FILENAME = 'config';
+const YAML_CONFIG_FILENAME = 'configuration';
 
 export default () => {
   const logger: Logger = new Logger('ConfigLoader');
