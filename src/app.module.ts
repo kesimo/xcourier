@@ -21,9 +21,20 @@ import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
           format: winston.format.combine(
             winston.format.timestamp(),
             winston.format.ms(),
-            nestWinstonModuleUtilities.format.nestLike('MyApp', {
+            nestWinstonModuleUtilities.format.nestLike('Notifier', {
               prettyPrint: true,
             }),
+          ),
+        }),
+        new winston.transports.File({
+          filename: './notifier.log',
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.ms(),
+            nestWinstonModuleUtilities.format.nestLike('Notifier', {
+              prettyPrint: true,
+            }),
+            winston.format.uncolorize(),
           ),
         }),
       ],
