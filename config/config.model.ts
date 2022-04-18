@@ -19,8 +19,8 @@ import { Type } from 'class-transformer';
 
 export class EmailConfiguration {
   @IsOptional()
-  @IsBoolean()
-  use_smtp?: boolean;
+  @IsString()
+  smtp_url?: string;
   @IsString()
   @IsNotEmpty()
   @IsUrl()

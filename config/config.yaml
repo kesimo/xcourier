@@ -1,4 +1,5 @@
 email:
+  use_smtp: false
   host: test.com
   port: 2400
   ignore_tls: true
