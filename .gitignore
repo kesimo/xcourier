@@ -39,3 +39,4 @@ lerna-debug.log*
 /.env
 *.yaml
 *.yml
+/config/*.yaml
