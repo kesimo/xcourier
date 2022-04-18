@@ -34,7 +34,7 @@ export class MailTransmitterService {
    * @return {*}  {Promise<any>}
    * @memberof MailTransmitterService
    */
-  async sendJobOffer(receiver: string, context: any): Promise<any> {
+  async sendDefaultMail(receiver: string, context: any): Promise<any> {
     const path = join(
       process.cwd(),
       'src',
