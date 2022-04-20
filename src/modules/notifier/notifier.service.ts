@@ -26,11 +26,14 @@ export class NotifierService {
       throw new NotFoundException();
     }
     if (config.default_template) {
+      //convert JSON Body to message parsed in html email template
+      const rawMessage = messageData ? JSON.stringify(messageData) : null;
+      console.log(messageData);
       return this.mailService
         .sendDefaultMails(
           config.receivers,
           new DefaultContext(id, config.subject, {
-            message: config.message || messageData,
+            message: rawMessage || config.message,
             linked_url: config.linked_url || null,
             linked_url_tag: config.linked_url_tag || null,
           }),

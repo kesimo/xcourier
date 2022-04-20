@@ -24,17 +24,17 @@ export class NotifierController {
   async sendNotificationGet(
     @Param('customId') id: string,
     @Req() req: Express.Request,
-    @Body() replacementData: any,
+    @Body() body: any,
   ): Promise<StatusMessage> {
-    return this.notifierService.sendMailNotification(id, replacementData);
+    return this.notifierService.sendMailNotification(id, body);
   }
 
   @Post('/:customId')
   async sendNotificationPush(
     @Param('customId') id: string,
     @Req() req: Express.Request,
-    @Body() replacementData: any,
+    @Body() body: any,
   ): Promise<StatusMessage> {
-    return this.notifierService.sendMailNotification(id, replacementData);
+    return this.notifierService.sendMailNotification(id, body);
   }
 }
