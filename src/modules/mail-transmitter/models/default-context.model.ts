@@ -1,6 +1,6 @@
 import { MailContext } from './context.model';
 
-export class DefaultContext extends MailContext {
+export class DefaultContext implements MailContext {
   id: string = null;
   subject = '';
   message = 'no message arrived';
@@ -8,7 +8,8 @@ export class DefaultContext extends MailContext {
   linked_url_tag = null;
 
   constructor(id, subject, partial: Partial<DefaultContext>) {
-    super(id, subject);
+    this.id = id;
+    this.subject = subject;
     Object.assign(this, partial);
   }
 }

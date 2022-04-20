@@ -8,6 +8,7 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
+import { StatusMessage } from './models/response-status.enum';
 import { NotifierService } from './notifier.service';
 
 @Controller('')
@@ -21,19 +22,19 @@ export class NotifierController {
 
   @Get('/:customId')
   async sendNotificationGet(
-    @Param('customId') jobId: string,
+    @Param('customId') id: string,
     @Req() req: Express.Request,
     @Body() replacementData: any,
-  ): Promise<any> {
-    throw new NotImplementedException();
+  ): Promise<StatusMessage> {
+    return this.notifierService.sendMailNotification(id, replacementData);
   }
 
   @Post('/:customId')
   async sendNotificationPush(
-    @Param('customId') jobId: string,
+    @Param('customId') id: string,
     @Req() req: Express.Request,
     @Body() replacementData: any,
-  ): Promise<any> {
-    throw new NotImplementedException();
+  ): Promise<StatusMessage> {
+    return this.notifierService.sendMailNotification(id, replacementData);
   }
 }

@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NotifierModule } from './modules/notifier/notifier.module';
 import configuration from '../config/configuration';
 import serverConfiguration from 'config/server-configuration';
 import { MailTransmitterModule } from './modules/mail-transmitter/mail-transmitter.module';
-import { MailerModule } from '@nestjs-modules/mailer';
+import { MailerModule, MailerOptions } from '@nestjs-modules/mailer';
 import { MailConfigService } from './modules/mail-transmitter/mail-config.service';
 import { WinstonModule } from 'nest-winston/dist/winston.module';
 import * as winston from 'winston';
 import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
 import { ConfigurationModule } from './modules/configuration/configuration.module';
+import { ConfigurationService } from './modules/configuration/configuration.service';
 
 @Module({
   imports: [
@@ -49,8 +50,14 @@ import { ConfigurationModule } from './modules/configuration/configuration.modul
       },
     }),
     MailerModule.forRootAsync({
-      useClass: MailConfigService,
       imports: [ConfigurationModule],
+      // useFactory: (config: ConfigurationService) => {
+      //   const mailConfigService = new MailConfigService(config);
+      //   console.log(mailConfigService.createMailerOptions());
+      //   return mailConfigService.createMailerOptions as MailerOptions;
+      // },
+      useClass: MailConfigService,
+      inject: [ConfigurationService],
     }),
     NotifierModule,
     MailTransmitterModule,

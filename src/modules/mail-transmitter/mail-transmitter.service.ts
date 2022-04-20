@@ -44,7 +44,7 @@ export class MailTransmitterService {
       process.cwd(),
       'src',
       'modules',
-      'mail',
+      'mail-transmitter',
       'mail-templates',
       'default_message.hbs',
     );

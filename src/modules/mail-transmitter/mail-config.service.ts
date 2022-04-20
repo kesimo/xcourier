@@ -4,7 +4,6 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { join } from 'path';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { EmailConfiguration } from 'config/config.model';
-import * as nodemailer from 'nodemailer';
 @Injectable()
 export class MailConfigService implements MailerOptionsFactory {
   mailConfigurations: EmailConfiguration;
@@ -13,19 +12,15 @@ export class MailConfigService implements MailerOptionsFactory {
     this.mailConfigurations = configurationService.getMailConfiguration();
   }
   createMailerOptions(): MailerOptions {
-    console.log('createMailerOptions');
-    console.log(this.configurationService.getMailConfiguration());
     let transportOptions = null;
     if (
       this.mailConfigurations.smtp_url &&
       this.mailConfigurations.smtp_url.length > 0
     ) {
       console.log('load smtp');
-      transportOptions = nodemailer.createTransport(
-        this.mailConfigurations.smtp_url,
-      );
+      transportOptions = this.mailConfigurations.smtp_url;
     } else {
-      transportOptions = nodemailer.createTransport({
+      transportOptions = {
         host: this.mailConfigurations.host,
         port: this.mailConfigurations.port,
         ignoreTLS: this.mailConfigurations.ignore_tls,
@@ -35,7 +30,9 @@ export class MailConfigService implements MailerOptionsFactory {
           user: this.mailConfigurations.user,
           pass: this.mailConfigurations.password,
         },
-      });
+        debug: this.configurationService.getServerConfiguration().debug,
+        logger: this.configurationService.getServerConfiguration().debug,
+      };
     }
     return {
       //Mail provider connection options
@@ -46,7 +43,13 @@ export class MailConfigService implements MailerOptionsFactory {
       //load templates by path and apply handlebars adapter
       // (used for replace text and url in email template)
       template: {
-        dir: join(process.cwd(), 'src', 'modules', 'mail', 'mail-templates/'),
+        dir: join(
+          process.cwd(),
+          'src',
+          'modules',
+          'mail-transmitter',
+          'mail-templates/',
+        ),
         adapter: new HandlebarsAdapter(undefined, {
           inlineCssEnabled: true,
         }),
