@@ -21,14 +21,16 @@
           {{message}}<br />
         </td>
       </tr>
-      <tr>
-        <td style='text-align:center'>
-          <a
-            href='{{linked_url}}'
-            style='display:inline-block;padding:20px;background:#00838f;text-decoration:none;color:#ffffff'
-          >{{linked_url_tag}}</a>
-        </td>
-      </tr>
+      {{#if linked_url}}
+        <tr>
+          <td style='text-align:center'>
+            <a
+              href='{{linked_url}}'
+              style='display:inline-block;padding:20px;background:#00838f;text-decoration:none;color:#ffffff'
+            >{{linked_url_tag}}</a>
+          </td>
+        </tr>
+      {{/if}}
     </table>
   </body>
 
