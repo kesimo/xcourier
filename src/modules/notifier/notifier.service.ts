@@ -17,25 +17,27 @@ export class NotifierService {
     private mailService: MailTransmitterService,
   ) {}
 
-  async sendMailNotification(
-    id: string,
-    messageData: any,
-  ): Promise<StatusMessage> {
+  async sendMailNotification(id: string, data: any): Promise<StatusMessage> {
     const config = this.configurationService.getEndpointConfiguration(id);
     if (!config) {
       throw new NotFoundException();
     }
     if (config.default_template) {
       //convert JSON Body to message parsed in html email template
-      const rawMessage = messageData ? JSON.stringify(messageData) : null;
-      console.log(messageData);
+      const rawData = data ? JSON.stringify(data) : 'No data received';
+      console.log(data);
       return this.mailService
         .sendDefaultMails(
           config.receivers,
           new DefaultContext(id, config.subject, {
-            message: rawMessage || config.message,
+            message:
+              config.message ||
+              'New notification from entrypoint with id' + config.id,
+            raw_data: rawData,
+            cleaned_data: { 'example key': 'CLEANED DATA TODO' },
             linked_url: config.linked_url || null,
             linked_url_tag: config.linked_url_tag || null,
+            timestamp: new Date(),
           }),
         )
         .then(() => StatusMessage.success)

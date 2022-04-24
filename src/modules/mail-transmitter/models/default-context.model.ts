@@ -4,8 +4,11 @@ export class DefaultContext implements MailContext {
   id: string = null;
   subject = '';
   message = 'no message arrived';
+  raw_data: any = null;
+  cleaned_data: Record<string, string> = null;
   linked_url = null;
   linked_url_tag = null;
+  timestamp: Date = null;
 
   constructor(id, subject, partial: Partial<DefaultContext>) {
     this.id = id;

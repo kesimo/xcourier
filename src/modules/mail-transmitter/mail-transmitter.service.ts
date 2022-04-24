@@ -46,7 +46,7 @@ export class MailTransmitterService {
       'modules',
       'mail-transmitter',
       'mail-templates',
-      'default_message.hbs',
+      'default_mail_template.hbs',
     );
     if (!fs.existsSync(defaultMessageTemplatePath)) {
       this.logger.error(
