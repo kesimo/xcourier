@@ -58,8 +58,36 @@
           >Received Information:</span>
           <div
             class='home-container4'
-            style='flex: 0 0 auto;width: 100%;height: 100px;display: flex;align-items: flex-start;border-radius: 8px;background-color: #e0e0e0;'
-          >{{cleaned_data}}</div>
+            style='flex: 0 0 auto;width: 100%;height: 100px;display: flex  align-self: center;align-items: center;justify-content: center;border-radius: 8px; overflow-x:auto'
+          >
+            <table
+              class='cleared-data-table'
+              style='width: 90%; border-collapse: collapse; margin: 8px auto; box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.85); border-radius: 8px 8px 0 0;'
+            >
+              <tr>
+                <th
+                  style='background-color: rgb(54, 0, 51); color: white; border-radius: 8px 0 0 0; padding-left: 8px; padding-right: 8px; text-align:left'
+                >Key</th>
+                <th
+                  style='background-color: rgb(54, 0, 51); color: white; border-radius: 0 8px 0 0; padding-left: 8px; padding-right: 8px; text-align:left'
+                >Value</th>
+              </tr>
+              <tr>
+                <td
+                  style='border-right: 1px solid rgb(87, 84, 84); padding-left: 8px; padding-right: 8px'
+                >teskey1</td>
+                <td style='padding-left: 8px; padding-right: 8px'>testvalue
+                  short</td>
+              </tr>
+              <tr style='background-color:rgba(87, 84, 84, 0.181)'>
+                <td
+                  style='border-right: 1px solid rgb(87, 84, 84); padding-left: 8px; padding-right: 8px; word-break:break-all;'
+                >Longer_key_from_cleaned_data</td>
+                <td style='padding-left: 8px; padding-right: 8px'>[array,
+                  values, in, table]</td>
+              </tr>
+            </table>
+          </div>
           {{#if linked_url}}
             <button
               class='home-button button'
@@ -72,7 +100,7 @@
           >Raw Data:</span>
           <div
             class='home-container5'
-            style='flex: 0 0 auto;width: 100%;border: 2px dashed rgba(120, 120, 120, 0.4);height: 100px;display: flex;align-self: center;align-items: flex-start;'
+            style='flex: 0 0 auto;width: 90%;border: 2px dashed rgba(120, 120, 120, 0.4);height: 100px;display: flex;align-self: center;align-items: flex-start;'
           >{{raw_data}}</div>
         </div>
         <span
