@@ -60,7 +60,7 @@ export class MailTransmitterService {
       .sendMail({
         to: receiver,
         subject: context.subject,
-        text: `text`,
+        text: `text`, //todo add raw text
         template: defaultMessageTemplatePath,
         context: context,
       })
