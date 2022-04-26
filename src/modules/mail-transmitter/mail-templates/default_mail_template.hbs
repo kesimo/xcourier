@@ -2,24 +2,11 @@
   <div>
     <div
       class='home-container'
-      style='width: 100%;
-  display: flex;
-  overflow: auto;
-  min-height: 100vh;
-  align-items: center;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-image: linear-gradient(90deg, rgb(54, 0, 51) 1.00%,rgb(11, 135, 147) 98.00%);'
+      style='width: 100%;display: flex;overflow: auto;min-height: 100vh;align-items: center;flex-direction: column;justify-content: flex-start;background-image: linear-gradient(90deg, rgb(54, 0, 51) 1.00%,rgb(11, 135, 147) 98.00%);'
     >
       <div
         class='home-container1'
-        style='width: 90%;
-  display: flex;
-  align-self: center;
-  box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.85);
-  margin-top: 24px;
-  align-items: center;
-  margin-left: 0px;
+        style='width: 90%;display: flex;align-self: center;box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.85);margin-top: 24px;align-items: center;margin-left: 0px;
   padding-top: 1px;
   margin-right: 0px;
   padding-left: 1px;
@@ -33,52 +20,88 @@
       >
         <div
           class='home-container2'
-          style='flex: 0 0 auto;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  border-radius: 8px;
-  justify-content: center;
-  background-color: #c9c9c9;'
+          style='flex: 0 0 auto;width: 100%;display: flex;align-items: center;border-radius: 8px;justify-content: center;background-color: #c9c9c9;'
         >
           <h1
             class='home-text'
-            style='margin-top: 16px;
-  font-family: Exo 2;
-  margin-bottom: 16px;'
+            style='margin-top: 16px;font-family: Exo 2;margin-bottom: 16px;'
           >{{message}}</h1>
         </div>
         <div
           class='home-container3'
           style='width: 90%;height: 100%;display: flex;margin-top: 48px;align-items: center;padding-left: 32px;padding-right: 32px;flex-direction: column;justify-content: flex-start;'
         >
-          <span
-            class='home-text1 sub-header'
-            style='align-self: flex-start;margin-bottom: 0px;'
-          >Received Information:</span>
-          <div
-            class='home-container4'
-            style='flex: 0 0 auto;width: 100%;height: 100px;display: flex;align-items: flex-start;border-radius: 8px;background-color: #e0e0e0;'
-          >{{cleaned_data}}</div>
+          {{#if cleaned_data}}
+            <span
+              class='home-text1 sub-header'
+              style='align-self: center;margin-bottom: 0px;'
+            >Received Information:</span>
+            <div
+              class='home-container4'
+              style='flex: 0 0 auto;width: 100%;height: auto;display: flex  align-self: center;align-items: center;justify-content: center;border-radius: 8px; overflow-x:auto'
+            >
+              <table
+                class='cleared-data-table'
+                style='width: 90%; border-collapse: collapse; margin: 8px auto; box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.85); border-radius: 8px 8px 0 0;'
+              >
+                <tr style='background-color: #194983; '>
+                  <th
+                    style='color: white;border-radius: 8px 0 0 0; border-right: 1px solid white; padding-left: 8px; padding-right: 8px; text-align: start; min-width: 140px'
+                  >Property</th>
+                  <th
+                    style='color: white;border-radius: 0 8px 0 0; padding-left: 8px; padding-right: 8px; text-align:left;  min-width: 140px'
+                  >Value</th>
+                </tr>
+                {{#each cleaned_data}}
+                  {{#if isEven}}
+                    <tr>
+                      <td
+                        style='border-right: 1px solid rgb(87, 84, 84); padding-left: 8px; padding-right: 8px; word-break:break-all; min-width: 140px; text-align: start'
+                      >{{key}}</td>
+                      <td
+                        style='padding-left: 8px; padding-right: 8px; word-break:all; min-width: 140px'
+                      >{{#each value}} {{this}}, {{/each}}</td>
+                    </tr>
+                  {{else}}
+                    <tr style='background-color:rgba(87, 84, 84, 0.181)'>
+                      <td
+                        style='border-right: 1px solid rgb(87, 84, 84); padding-left: 8px; padding-right: 8px; word-break:break-all; min-width: 140px; text-align: start'
+                      >{{key}}</td>
+                      <td
+                        style='padding-left: 8px; padding-right: 8px; word-break:break-all;  min-width: 140px'
+                      >{{value}}</td>
+                    </tr>
+                  {{/if}}
+                {{/each}}
+              </table>
+            </div>
+          {{/if}}
           {{#if linked_url}}
             <button
               class='home-button button'
-              style='color: #ffffff;width: 70%;font-size: 18px;box-shadow: 5px 5px 10px 0px #969696;margin-top: 24px;text-align: center;font-family: Exo 2;border-width: 0px;border-radius: 8px;background-color: #194983;'
-            ><a href='{{linked_url}}'>{{linked_url_tag}}</a></button>
+              style='width: auto;font-size: 18px;box-shadow: 3px 3px 10px 0px #969696;margin-top: 24px;padding: 2px 8px 2px 8px;text-align: center;font-family: Exo 2;border-radius: 8px;background-color: #194983; color: white;'
+            ><a
+                href='{{linked_url}}'
+                style='text-decoration:none; color: white; cursor: pointer;'
+              >{{linked_url_tag}}</a>
+            </button>
           {{/if}}
           <span
             class='home-text2 sub-header'
-            style='font-size: 16px;align-self: flex-start;padding-top: 16px;'
-          >Raw Data:</span>
+            style='font-size: 16px;align-self: center;padding-top: 16px;'
+          >
+            Raw Data:
+          </span>
           <div
             class='home-container5'
-            style='flex: 0 0 auto;width: 100%;border: 2px dashed rgba(120, 120, 120, 0.4);height: 100px;display: flex;align-self: center;align-items: flex-start;'
+            style='flex: 0 0 auto;width: 90%;border: 2px dashed rgba(120, 120, 120, 0.4);height: auto;display: flex;align-self: center;align-items: flex-start; padding: 8px; word-break:break-all;'
           >{{raw_data}}</div>
         </div>
         <span
           class='home-text3'
           style='font-style: normal;font-family: Exo 2;font-weight: 200;padding-top: 16px;'
-        >{{timestamp}}</span>
+        >{{timestamp}}
+        </span>
       </div>
       <div
         class='home-container6'
@@ -87,7 +110,8 @@
         <span
           class='home-text4'
           style='color: #ffffff;font-size: 24px;font-style: normal;font-family: Exo 2;font-weight: 800;text-transform: capitalize;'
-        >Mailify</span>
+        >Mailify
+        </span>
         <span
           class='home-text5'
           style='font-size: 18px;font-family: Source Sans Pro;padding-left: 6px;'

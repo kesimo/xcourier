@@ -1,11 +1,11 @@
 export class JsonConverter {
   public static convertToOneLevelArray(
     obj: any,
-  ): Array<{ key: string; value: string | string[] }> {
+  ): Array<{ key: string; value: string | string[]; isEven: boolean }> {
     const result = new Array<any>();
-    for (const key in Object.keys(obj)) {
-      result.push({ key: key, value: obj[key] });
-    }
+    Object.keys(obj).forEach((key, index) => {
+      result.push({ key: key, value: obj[key], isEven: index % 2 === 0 });
+    });
     return result;
   }
 }
