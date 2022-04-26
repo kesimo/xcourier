@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmailConfiguration, EndpointConfiguration } from 'config/config.model';
 import { ServerConfiguration } from 'config/server-config.model';
@@ -8,6 +8,7 @@ export class ConfigurationService {
   protected readonly serverConfiguration: ServerConfiguration;
   protected readonly emailConfiguration: EmailConfiguration;
   protected readonly endpointConfigurations: EndpointConfiguration[];
+  logger = new Logger(ConfigurationService.name);
 
   constructor(private configService: ConfigService) {
     this.serverConfiguration =
@@ -27,12 +28,12 @@ export class ConfigurationService {
   }
 
   getEndpointConfiguration(id: string): EndpointConfiguration | null {
-    let endpointConfiguration = null;
     for (const endpoint of this.endpointConfigurations) {
-      if (endpoint.id === id) {
-        endpointConfiguration = endpoint;
+      //prefer first endpoint found
+      if (endpoint.id.trim() === id) {
+        return endpoint;
       }
     }
-    return endpointConfiguration;
+    this.logger.warn('no endpoint found for id: /' + id);
   }
 }
