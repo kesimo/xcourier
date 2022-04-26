@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Configuration } from 'config/config.model';
 import { ServerConfiguration } from 'config/server-config.model';
+import { JsonConverter } from 'src/utils/json-converter.util';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { MailTransmitterService } from '../mail-transmitter/mail-transmitter.service';
 import { DefaultContext } from '../mail-transmitter/models/default-context.model';
@@ -23,9 +24,12 @@ export class NotifierService {
       throw new NotFoundException();
     }
     if (config.default_template) {
+      //convert JSON Body to array for table visualizations
+      const parsedJsonBody = JsonConverter.convertToOneLevelArray(data);
       //convert JSON Body to message parsed in html email template
       const rawData = data ? JSON.stringify(data) : 'No data received';
       console.log(data);
+      console.log(parsedJsonBody);
       return this.mailService
         .sendDefaultMails(
           config.receivers,
@@ -34,7 +38,8 @@ export class NotifierService {
               config.message ||
               'New notification from entrypoint with id' + config.id,
             raw_data: rawData,
-            cleaned_data: { 'example key': 'CLEANED DATA TODO' },
+            cleaned_data:
+              parsedJsonBody.length > 0 ? parsedJsonBody : 'No data received',
             linked_url: config.linked_url || null,
             linked_url_tag: config.linked_url_tag || null,
             timestamp: new Date(),

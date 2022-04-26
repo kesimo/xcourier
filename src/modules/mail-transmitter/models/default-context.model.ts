@@ -5,7 +5,9 @@ export class DefaultContext implements MailContext {
   subject = '';
   message = 'no message arrived';
   raw_data: any = null;
-  cleaned_data: Record<string, string> = null;
+  cleaned_data:
+    | Array<{ key: string; value: string | string[]; isEven: boolean }>
+    | string = null;
   linked_url = null;
   linked_url_tag = null;
   timestamp: Date = null;
