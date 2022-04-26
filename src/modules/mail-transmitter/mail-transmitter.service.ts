@@ -55,12 +55,13 @@ export class MailTransmitterService {
       );
       throw new InternalServerErrorException();
     }
+    const rawMailText = `Message: ${context.message} ---- Data: ${context.raw_data} ---- at: ${context.timestamp}`;
     this.logger.log('sending mail to ' + receiver);
     return this.mailerService
       .sendMail({
         to: receiver,
         subject: context.subject,
-        text: `text`, //todo add raw text
+        text: rawMailText,
         template: defaultMessageTemplatePath,
         context: context,
       })
