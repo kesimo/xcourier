@@ -16,11 +16,13 @@ export class BasicStrategy extends PassportStrategy(Strategy) {
   }
 
   public validate = async (req, username, password): Promise<boolean> => {
-    //todo get data from yaml
     if (
       this.serverConfiguration.basic_auth_username === username &&
       this.serverConfiguration.basic_auth_password === password
     ) {
+      return true;
+    } else if (!this.serverConfiguration.basic_auth_username) {
+      //todo get data from yaml
       return true;
     }
     throw new UnauthorizedException();
