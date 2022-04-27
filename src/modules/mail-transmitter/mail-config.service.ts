@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { MailerOptions, MailerOptionsFactory } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
@@ -7,6 +7,7 @@ import { EmailConfiguration } from 'config/config.model';
 @Injectable()
 export class MailConfigService implements MailerOptionsFactory {
   mailConfigurations: EmailConfiguration;
+  logger = new Logger(MailConfigService.name);
   //email configuration file with connection parameters from .yaml
   constructor(private readonly configurationService: ConfigurationService) {
     this.mailConfigurations = configurationService.getMailConfiguration();
@@ -17,7 +18,7 @@ export class MailConfigService implements MailerOptionsFactory {
       this.mailConfigurations.smtp_url &&
       this.mailConfigurations.smtp_url.length > 0
     ) {
-      console.log('load smtp');
+      this.logger.log('loading SMTP configuration from url');
       transportOptions = this.mailConfigurations.smtp_url;
     } else {
       transportOptions = {
