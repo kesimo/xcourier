@@ -5,12 +5,13 @@ import {
   NotImplementedException,
   Param,
   Post,
+  Put,
   Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { StatusMessage } from './models/response-status.enum';
+import { IResponseStatus } from './models/response-status.model';
 import { NotifierService } from './notifier.service';
 
 @Controller('')
@@ -28,8 +29,9 @@ export class NotifierController {
     @Param('customId') id: string,
     @Req() req: Express.Request,
     @Body() body: any,
-  ): Promise<StatusMessage> {
-    return this.notifierService.sendMailNotification(id, body);
+  ): Promise<IResponseStatus> {
+    const status = this.notifierService.sendMailNotification(id, body);
+    return status;
   }
 
   @Post('/:customId')
@@ -37,7 +39,18 @@ export class NotifierController {
     @Param('customId') id: string,
     @Req() req: Express.Request,
     @Body() body: any,
-  ): Promise<StatusMessage> {
-    return this.notifierService.sendMailNotification(id, body);
+  ): Promise<IResponseStatus> {
+    const status = this.notifierService.sendMailNotification(id, body);
+    return status;
+  }
+
+  @Put('/:customId')
+  async sendNotificationPut(
+    @Param('customId') id: string,
+    @Req() req: Express.Request,
+    @Body() body: any,
+  ): Promise<IResponseStatus> {
+    const status = this.notifierService.sendMailNotification(id, body);
+    return status;
   }
 }

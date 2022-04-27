@@ -65,7 +65,7 @@ export class MailTransmitterService {
         template: defaultMessageTemplatePath,
         context: context,
       })
-      .then(() => this.logger.log('mail successfully sent'))
+      .then(() => this.logger.log('mail(s) successfully sent'))
       .catch((err) => {
         throw err;
       });

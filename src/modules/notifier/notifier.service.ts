@@ -1,11 +1,17 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { Configuration } from 'config/config.model';
 import { ServerConfiguration } from 'config/server-config.model';
 import { JsonConverter } from 'src/utils/json-converter.util';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { MailTransmitterService } from '../mail-transmitter/mail-transmitter.service';
 import { DefaultContext } from '../mail-transmitter/models/default-context.model';
-import { StatusMessage } from './models/response-status.enum';
+import { IResponseStatus } from './models/response-status.model';
+import { StatusMessage } from './models/status-message.enum';
 
 @Injectable()
 export class NotifierService {
@@ -18,18 +24,19 @@ export class NotifierService {
     private mailService: MailTransmitterService,
   ) {}
 
-  async sendMailNotification(id: string, data: any): Promise<StatusMessage> {
+  async sendMailNotification(id: string, data: any): Promise<IResponseStatus> {
     const config = this.configurationService.getEndpointConfiguration(id);
     if (!config) {
       throw new NotFoundException();
+    }
+    if (config.receivers.length === 0) {
+      throw new ConflictException();
     }
     if (config.default_template) {
       //convert JSON Body to array for table visualizations
       const parsedJsonBody = JsonConverter.convertToOneLevelArray(data);
       //convert JSON Body to message parsed in html email template
       const rawData = data ? JSON.stringify(data) : 'No data received';
-      console.log(data);
-      console.log(parsedJsonBody);
       return this.mailService
         .sendDefaultMails(
           config.receivers,
@@ -45,15 +52,24 @@ export class NotifierService {
             timestamp: new Date(),
           }),
         )
-        .then(() => StatusMessage.success)
+        .then(() => ({
+          status: StatusMessage.success,
+          sentMails: config.receivers.length,
+        }))
         .catch((error) => {
           this.logger.error(error);
-          return StatusMessage.failed;
+          return {
+            status: StatusMessage.failed,
+            sentMails: 0,
+          };
         });
     }
 
     //todo 2. get configuration from second service
     //todo 3. send emails to all defined receivers with selected template or default template
-    return StatusMessage.success;
+    return {
+      status: StatusMessage.unknown,
+      sentMails: 0,
+    };
   }
 }
