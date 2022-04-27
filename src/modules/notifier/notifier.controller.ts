@@ -7,7 +7,9 @@ import {
   Post,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { StatusMessage } from './models/response-status.enum';
 import { NotifierService } from './notifier.service';
 
@@ -21,6 +23,7 @@ export class NotifierController {
   }
 
   @Get('/:customId')
+  @UseGuards(AuthGuard('basic'))
   async sendNotificationGet(
     @Param('customId') id: string,
     @Req() req: Express.Request,

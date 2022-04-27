@@ -7,9 +7,9 @@ export default () => {
     port: parseInt(process.env.PORT, 10) || 3000,
     debug: process.env.DEBUG == 'true' ? true : false,
     base_url: process.env.BASE_URL || '/',
-    basic_auth_username: process.env.BASIC_AUTH_USERNAME,
-    basic_auth_password: process.env.BASIC_AUTH_PASSWORD,
-    api_key: process.env.API_KEY,
+    basic_auth_username: process.env.BASIC_AUTH_USERNAME || null,
+    basic_auth_password: process.env.BASIC_AUTH_PASSWORD || null,
+    api_key: process.env.API_KEY || null,
   };
 
   const validatedConfig = plainToInstance(

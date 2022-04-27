@@ -13,11 +13,12 @@ import * as winston from 'winston';
 import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
 import { ConfigurationModule } from './modules/configuration/configuration.module';
 import { ConfigurationService } from './modules/configuration/configuration.service';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
     WinstonModule.forRoot({
-      // todo configure logging
+      //todo configure logging file path
       transports: [
         new winston.transports.Console({
           format: winston.format.combine(
@@ -61,6 +62,7 @@ import { ConfigurationService } from './modules/configuration/configuration.serv
     }),
     NotifierModule,
     MailTransmitterModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
