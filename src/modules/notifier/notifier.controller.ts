@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   NotImplementedException,
   Param,
   Post,
@@ -19,8 +20,19 @@ export class NotifierController {
   constructor(private readonly notifierService: NotifierService) {}
 
   @Get('/params')
+  @UseGuards(AuthGuard('basic'))
   async sendNotificationByGetQuery(@Query() query) {
-    console.log(query);
+    if (!query.id) throw new NotFoundException('Endpoint id is missing');
+    const status = this.notifierService.sendMailNotification(query.id, query);
+    return status;
+  }
+
+  @Post('/params')
+  @UseGuards(AuthGuard('basic'))
+  async sendNotificationByPostQuery(@Query() query: any) {
+    if (!query.id) throw new NotFoundException('Endpoint id is missing');
+    const status = this.notifierService.sendMailNotification(query.id, query);
+    return status;
   }
 
   @Get('/:customId')
@@ -29,8 +41,11 @@ export class NotifierController {
     @Param('customId') id: string,
     @Req() req: Express.Request,
     @Body() body: any,
+    @Query() query: any,
   ): Promise<IResponseStatus> {
-    const status = this.notifierService.sendMailNotification(id, body);
+    const data = { ...query, ...body };
+    //console.log(data);
+    const status = this.notifierService.sendMailNotification(id, data);
     return status;
   }
 
@@ -39,6 +54,7 @@ export class NotifierController {
     @Param('customId') id: string,
     @Req() req: Express.Request,
     @Body() body: any,
+    @Query() query: any,
   ): Promise<IResponseStatus> {
     const status = this.notifierService.sendMailNotification(id, body);
     return status;

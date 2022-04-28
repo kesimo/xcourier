@@ -35,6 +35,7 @@ export class NotifierService {
     if (config.default_template) {
       //convert JSON Body to array for table visualizations
       const parsedJsonBody = JsonConverter.convertToOneLevelArray(data);
+      console.log(parsedJsonBody);
       //convert JSON Body to message parsed in html email template
       const rawData = data ? JSON.stringify(data) : 'No data received';
       return this.mailService
@@ -43,12 +44,14 @@ export class NotifierService {
           new DefaultContext(id, config.subject, {
             message:
               config.message ||
+              data.message ||
               'New notification from entrypoint with id' + config.id,
             raw_data: rawData,
             cleaned_data:
               parsedJsonBody.length > 0 ? parsedJsonBody : 'No data received',
-            linked_url: config.linked_url || null,
-            linked_url_tag: config.linked_url_tag || null,
+            linked_url: config.linked_url || data.linked_url || null,
+            linked_url_tag:
+              config.linked_url_tag || data.linked_url_tag || null,
             timestamp: new Date(),
           }),
         )
