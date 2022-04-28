@@ -29,12 +29,7 @@ export class NotifierController {
   @UseGuards(AuthGuard('basic'))
   async sendNotificationByGetQuery(@Query() query): Promise<IResponseStatus> {
     if (!query.id) throw new NotFoundException('Endpoint id is missing');
-    const cleaned_query = query;
-    delete cleaned_query.id;
-    const status = this.notifierService.sendMailNotification(
-      query.id,
-      cleaned_query,
-    );
+    const status = this.notifierService.sendMailNotification(query.id, query);
     return status;
   }
 
@@ -51,12 +46,7 @@ export class NotifierController {
     @Query() query: any,
   ): Promise<IResponseStatus> {
     if (!query.id) throw new NotFoundException('Endpoint id is missing');
-    const cleaned_query = query;
-    delete cleaned_query.id;
-    const status = this.notifierService.sendMailNotification(
-      query.id,
-      cleaned_query,
-    );
+    const status = this.notifierService.sendMailNotification(query.id, query);
     return status;
   }
 
