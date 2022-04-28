@@ -4,9 +4,10 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { Configuration } from 'config/config.model';
+import { Configuration, PayloadType } from 'config/config.model';
 import { ServerConfiguration } from 'config/server-config.model';
 import { JsonConverter } from 'src/utils/json-converter.util';
+import { Config } from 'winston/lib/winston/config';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { MailTransmitterService } from '../mail-transmitter/mail-transmitter.service';
 import { DefaultContext } from '../mail-transmitter/models/default-context.model';
@@ -74,5 +75,28 @@ export class NotifierService {
       status: StatusMessage.unknown,
       sentMails: 0,
     };
+  }
+
+  //helpers
+  async getPreferredData(id: string, body: Config, query): Promise<any> {
+    const config = this.configurationService.getEndpointConfiguration(id);
+    switch (config.payload_type) {
+      case PayloadType.onlyJson:
+        return body;
+      case PayloadType.onlyQuery:
+        return query;
+      case PayloadType.onlyMessage:
+        return null;
+      case PayloadType.preferJson:
+        return { ...query, ...body };
+      case PayloadType.preferQuery:
+        return { ...body, ...query };
+      default:
+        //prefer json is the default case if nothing is set
+        if (Object.keys(body).length === 0 && Object.keys(query).length === 0) {
+          return null;
+        } else return { ...query, ...body };
+        break;
+    }
   }
 }
