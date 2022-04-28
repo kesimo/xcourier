@@ -19,7 +19,7 @@ export class ServerConfiguration {
   port = 3000;
   @IsString()
   @IsOptional()
-  base_url = '/';
+  url_prefix = '/';
   @IsString()
   @IsOptional()
   basic_auth_username?: string;

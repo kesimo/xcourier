@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
-  app.setGlobalPrefix(process.env.BASE_URL || '');
+  app.setGlobalPrefix(process.env.URL_PREFIX || '');
   app.enableCors({
     origin: '*',
     preflightContinue: false,
@@ -23,8 +23,8 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT).then(() => {
     logger.log('Started listening on port ' + process.env.PORT);
-    if (process.env.BASE_URL) {
-      logger.log('Global prefix set to ' + process.env.BASE_URL);
+    if (process.env.URL_PREFIX) {
+      logger.log('Global prefix set to ' + process.env.URL_PREFIX);
     }
   });
 }

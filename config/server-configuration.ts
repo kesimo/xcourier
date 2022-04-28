@@ -6,7 +6,7 @@ export default () => {
   const serverConfigFromEnv = {
     port: parseInt(process.env.PORT, 10) || 3000,
     debug: process.env.DEBUG == 'true' ? true : false,
-    base_url: process.env.BASE_URL || '/',
+    url_prefix: process.env.URL_PREFIX || '/',
     basic_auth_username: process.env.BASIC_AUTH_USERNAME || null,
     basic_auth_password: process.env.BASIC_AUTH_PASSWORD || null,
     api_key: process.env.API_KEY || null,
