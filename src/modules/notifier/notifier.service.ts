@@ -4,7 +4,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { Configuration } from 'config/config.model';
+import { Configuration, PayloadType } from 'config/config.model';
 import { ServerConfiguration } from 'config/server-config.model';
 import { JsonConverter } from 'src/utils/json-converter.util';
 import { ConfigurationService } from '../configuration/configuration.service';
@@ -32,7 +32,7 @@ export class NotifierService {
     if (config.receivers.length === 0) {
       throw new ConflictException();
     }
-    if (config.default_template) {
+    if (!config.template && !config.template_path) {
       //convert JSON Body to array for table visualizations
       const parsedJsonBody = JsonConverter.convertToOneLevelArray(data);
       console.log(parsedJsonBody);
@@ -66,13 +66,38 @@ export class NotifierService {
             sentMails: 0,
           };
         });
+    } else if (config.template_path) {
+      //todo send mails with custom template
+    } else {
+      //todo send mails with template string
     }
 
-    //todo 2. get configuration from second service
-    //todo 3. send emails to all defined receivers with selected template or default template
     return {
       status: StatusMessage.unknown,
       sentMails: 0,
     };
+  }
+
+  //helpers
+  async getPreferredData(id: string, body: any, query: any): Promise<any> {
+    const config = this.configurationService.getEndpointConfiguration(id);
+    switch (config.payload_type) {
+      case PayloadType.onlyJson:
+        return body;
+      case PayloadType.onlyQuery:
+        return query;
+      case PayloadType.onlyMessage:
+        return null;
+      case PayloadType.preferJson:
+        return { ...query, ...body };
+      case PayloadType.preferQuery:
+        return { ...body, ...query };
+      default:
+        //prefer json is the default case if nothing is set
+        if (Object.keys(body).length === 0 && Object.keys(query).length === 0) {
+          return null;
+        } else return { ...query, ...body };
+        break;
+    }
   }
 }

@@ -29,7 +29,12 @@ export class NotifierController {
   @UseGuards(AuthGuard('basic'))
   async sendNotificationByGetQuery(@Query() query): Promise<IResponseStatus> {
     if (!query.id) throw new NotFoundException('Endpoint id is missing');
-    const status = this.notifierService.sendMailNotification(query.id, query);
+    const data = await this.notifierService.getPreferredData(
+      query.id,
+      null,
+      query,
+    );
+    const status = this.notifierService.sendMailNotification(query.id, data);
     return status;
   }
 
@@ -46,7 +51,12 @@ export class NotifierController {
     @Query() query: any,
   ): Promise<IResponseStatus> {
     if (!query.id) throw new NotFoundException('Endpoint id is missing');
-    const status = this.notifierService.sendMailNotification(query.id, query);
+    const data = await this.notifierService.getPreferredData(
+      query.id,
+      null,
+      query,
+    );
+    const status = this.notifierService.sendMailNotification(query.id, data);
     return status;
   }
 
@@ -68,7 +78,7 @@ export class NotifierController {
     @Body() body: any,
     @Query() query: any,
   ): Promise<IResponseStatus> {
-    const data = { ...query, ...body };
+    const data = await this.notifierService.getPreferredData(id, body, query);
     const status = this.notifierService.sendMailNotification(id, data);
     return status;
   }
@@ -90,7 +100,7 @@ export class NotifierController {
     @Body() body: any,
     @Query() query: any,
   ): Promise<IResponseStatus> {
-    const data = { ...query, ...body };
+    const data = await this.notifierService.getPreferredData(id, body, query);
     const status = this.notifierService.sendMailNotification(id, data);
     return status;
   }
@@ -112,7 +122,7 @@ export class NotifierController {
     @Body() body: any,
     @Query() query: any,
   ): Promise<IResponseStatus> {
-    const data = { ...query, ...body };
+    const data = await this.notifierService.getPreferredData(id, body, query);
     const status = this.notifierService.sendMailNotification(id, data);
     return status;
   }

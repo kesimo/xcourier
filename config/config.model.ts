@@ -69,10 +69,12 @@ export class EmailConfiguration {
   default_name: string;
 }
 
-export enum EndpointType {
-  query = 'query',
-  json = 'json',
-  blank = 'blank',
+export enum PayloadType {
+  preferQuery = 'prefer_query',
+  preferJson = 'prefer_json',
+  onlyQuery = 'only_query',
+  onlyJson = 'only_json',
+  onlyMessage = 'only_message',
 }
 export class EndpointConfiguration {
   //used for endpoint identification (/:id)
@@ -81,9 +83,9 @@ export class EndpointConfiguration {
   id: string;
 
   //type of data to receive and parse
-  @IsNotEmpty()
-  @IsEnum(EndpointType)
-  data_type: EndpointType;
+  @IsOptional()
+  @IsEnum(PayloadType)
+  payload_type: PayloadType;
 
   //list of all email receivers
   @IsNotEmpty()
@@ -104,11 +106,6 @@ export class EndpointConfiguration {
   @IsString()
   @IsOptional()
   template?: string;
-
-  //set to true if default template should be used (only shows timestamp, request id and raw body)
-  @IsBoolean()
-  @IsOptional()
-  default_template?: boolean;
 
   //send simple message with default styling
   @IsString()
