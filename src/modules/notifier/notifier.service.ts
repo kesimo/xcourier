@@ -7,7 +7,6 @@ import {
 import { Configuration, PayloadType } from 'config/config.model';
 import { ServerConfiguration } from 'config/server-config.model';
 import { JsonConverter } from 'src/utils/json-converter.util';
-import { Config } from 'winston/lib/winston/config';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { MailTransmitterService } from '../mail-transmitter/mail-transmitter.service';
 import { DefaultContext } from '../mail-transmitter/models/default-context.model';
@@ -33,7 +32,7 @@ export class NotifierService {
     if (config.receivers.length === 0) {
       throw new ConflictException();
     }
-    if (config.default_template) {
+    if (!config.template && !config.template_path) {
       //convert JSON Body to array for table visualizations
       const parsedJsonBody = JsonConverter.convertToOneLevelArray(data);
       console.log(parsedJsonBody);
@@ -67,10 +66,12 @@ export class NotifierService {
             sentMails: 0,
           };
         });
+    } else if (config.template_path) {
+      //todo send mails with custom template
+    } else {
+      //todo send mails with template string
     }
 
-    //todo 2. get configuration from second service
-    //todo 3. send emails to all defined receivers with selected template or default template
     return {
       status: StatusMessage.unknown,
       sentMails: 0,

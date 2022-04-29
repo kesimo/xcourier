@@ -107,11 +107,6 @@ export class EndpointConfiguration {
   @IsOptional()
   template?: string;
 
-  //set to true if default template should be used (only shows timestamp, request id and raw body)
-  @IsBoolean()
-  @IsOptional()
-  default_template?: boolean;
-
   //send simple message with default styling
   @IsString()
   @IsOptional()
