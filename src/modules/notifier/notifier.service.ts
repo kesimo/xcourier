@@ -78,7 +78,7 @@ export class NotifierService {
   }
 
   //helpers
-  async getPreferredData(id: string, body: Config, query): Promise<any> {
+  async getPreferredData(id: string, body: any, query: any): Promise<any> {
     const config = this.configurationService.getEndpointConfiguration(id);
     switch (config.payload_type) {
       case PayloadType.onlyJson:
