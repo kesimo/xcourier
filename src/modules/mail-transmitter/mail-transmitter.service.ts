@@ -10,6 +10,7 @@ import { join } from 'path';
 import * as fs from 'fs';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { DefaultContext } from './models/default-context.model';
+import { CustomContext } from './models/custom-context.model';
 
 /**
  * Mailing service for sending mails with handlebars template
@@ -64,6 +65,50 @@ export class MailTransmitterService {
         text: rawMailText,
         template: defaultMessageTemplatePath,
         context: context,
+      })
+      .then(() => this.logger.log('mail(s) successfully sent'))
+      .catch((err) => {
+        throw err;
+      });
+  }
+
+  async sendCustomMails(
+    receiver: string[],
+    context: CustomContext,
+    data: any = null,
+    templatePath?: string,
+  ): Promise<any> {
+    if (!templatePath.match(/.(hbs)$/i)) {
+      templatePath = templatePath + '.hbs';
+    }
+    const customMessageTemplatePath = join(
+      process.cwd(),
+      'src',
+      'modules',
+      'mail-transmitter',
+      'mail-templates',
+      templatePath,
+    );
+    if (!fs.existsSync(customMessageTemplatePath)) {
+      this.logger.error('Mail template not found: ', customMessageTemplatePath);
+      throw new InternalServerErrorException();
+    }
+    const rawMailText = `Message: ${context.message} ---- Data: ${context.raw_data} ---- at: ${context.timestamp}`;
+    //feature: check if variables from template are given; else place default value
+    const fullfilledData = data;
+    const transformedData = Object.assign(
+      { internal: context }, //tonote: internal.raw_data, internal.timestamp, internal.subject, internal.message
+      fullfilledData,
+    );
+    console.log(transformedData);
+    this.logger.log('sending mail to ' + receiver);
+    return this.mailerService
+      .sendMail({
+        to: receiver,
+        subject: context.subject,
+        text: rawMailText,
+        template: customMessageTemplatePath,
+        context: transformedData,
       })
       .then(() => this.logger.log('mail(s) successfully sent'))
       .catch((err) => {

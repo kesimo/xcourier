@@ -6,9 +6,10 @@ import {
 } from '@nestjs/common';
 import { Configuration, PayloadType } from 'config/config.model';
 import { ServerConfiguration } from 'config/server-config.model';
-import { JsonConverter } from 'src/utils/json-converter.util';
+import { ObjectConverter } from 'src/utils/object-converter.util';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { MailTransmitterService } from '../mail-transmitter/mail-transmitter.service';
+import { CustomContext } from '../mail-transmitter/models/custom-context.model';
 import { DefaultContext } from '../mail-transmitter/models/default-context.model';
 import { IResponseStatus } from './models/response-status.model';
 import { StatusMessage } from './models/status-message.enum';
@@ -32,12 +33,11 @@ export class NotifierService {
     if (config.receivers.length === 0) {
       throw new ConflictException();
     }
+    //convert JSON Body to message parsed in html email template
+    const rawData = data ? JSON.stringify(data) : 'No data received';
     if (!config.template && !config.template_path) {
       //convert JSON Body to array for table visualizations
-      const parsedJsonBody = JsonConverter.convertToOneLevelArray(data);
-      console.log(parsedJsonBody);
-      //convert JSON Body to message parsed in html email template
-      const rawData = data ? JSON.stringify(data) : 'No data received';
+      const parsedJsonBody = ObjectConverter.convertToOneLevelArray(data);
       return this.mailService
         .sendDefaultMails(
           config.receivers,
@@ -68,14 +68,38 @@ export class NotifierService {
         });
     } else if (config.template_path) {
       //todo send mails with custom template
+      return this.mailService
+        .sendCustomMails(
+          config.receivers,
+          new CustomContext(id, config.subject, {
+            message:
+              config.message ||
+              data.message ||
+              'New notification from entrypoint with id' + config.id,
+            raw_data: rawData,
+            timestamp: new Date(),
+          }),
+          data,
+          config.template_path,
+        )
+        .then(() => ({
+          status: StatusMessage.success,
+          sentMails: config.receivers.length,
+        }))
+        .catch((error) => {
+          this.logger.error(error);
+          return {
+            status: StatusMessage.failed,
+            sentMails: 0,
+          };
+        });
     } else {
-      //todo send mails with template string
+      //feature send mails with template string
+      return {
+        status: StatusMessage.unknown,
+        sentMails: 0,
+      };
     }
-
-    return {
-      status: StatusMessage.unknown,
-      sentMails: 0,
-    };
   }
 
   //helpers
@@ -89,14 +113,14 @@ export class NotifierService {
       case PayloadType.onlyMessage:
         return null;
       case PayloadType.preferJson:
-        return { ...query, ...body };
+        return ObjectConverter.mergeDefaultValues(query, body);
       case PayloadType.preferQuery:
-        return { ...body, ...query };
+        return ObjectConverter.mergeDefaultValues(body, query);
       default:
         //prefer json is the default case if nothing is set
         if (Object.keys(body).length === 0 && Object.keys(query).length === 0) {
           return null;
-        } else return { ...query, ...body };
+        } else return ObjectConverter.mergeDefaultValues(query, body);
         break;
     }
   }

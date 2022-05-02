@@ -1,4 +1,4 @@
-export class JsonConverter {
+export class ObjectConverter {
   public static convertToOneLevelArray(
     obj: any,
   ): Array<{ key: string; value: string | string[]; isEven: boolean }> {
@@ -12,5 +12,11 @@ export class JsonConverter {
       });
     });
     return result;
+  }
+  public static mergeDefaultValues(
+    defaultObject: any,
+    overrideObject: any,
+  ): any {
+    return { ...defaultObject, ...overrideObject };
   }
 }
