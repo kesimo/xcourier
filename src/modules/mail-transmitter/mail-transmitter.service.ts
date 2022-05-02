@@ -75,10 +75,10 @@ export class MailTransmitterService {
   async sendCustomMails(
     receiver: string[],
     context: CustomContext,
+    data: any = null,
     templatePath?: string,
   ): Promise<any> {
     if (!templatePath.match(/.(hbs)$/i)) {
-      console.log('match true');
       templatePath = templatePath + '.hbs';
     }
     const customMessageTemplatePath = join(
@@ -94,12 +94,13 @@ export class MailTransmitterService {
       throw new InternalServerErrorException();
     }
     const rawMailText = `Message: ${context.message} ---- Data: ${context.raw_data} ---- at: ${context.timestamp}`;
-    //todo check if variables from template are given; else place default value
-    const fullfilledData = context;
+    //feature: check if variables from template are given; else place default value
+    const fullfilledData = data;
     const transformedData = Object.assign(
       { internal: context }, //tonote: internal.raw_data, internal.timestamp, internal.subject, internal.message
       fullfilledData,
     );
+    console.log(transformedData);
     this.logger.log('sending mail to ' + receiver);
     return this.mailerService
       .sendMail({

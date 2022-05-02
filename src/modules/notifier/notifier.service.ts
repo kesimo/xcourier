@@ -79,6 +79,7 @@ export class NotifierService {
             raw_data: rawData,
             timestamp: new Date(),
           }),
+          data,
           config.template_path,
         )
         .then(() => ({
