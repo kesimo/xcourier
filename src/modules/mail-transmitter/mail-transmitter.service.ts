@@ -83,9 +83,7 @@ export class MailTransmitterService {
     }
     const customMessageTemplatePath = join(
       process.cwd(),
-      'src',
-      'modules',
-      'mail-transmitter',
+      'templates',
       'mail-templates',
       templatePath,
     );
