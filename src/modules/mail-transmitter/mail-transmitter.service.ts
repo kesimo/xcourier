@@ -11,6 +11,7 @@ import * as fs from 'fs';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { DefaultContext } from './models/default-context.model';
 import { CustomContext } from './models/custom-context.model';
+import { MAIL_TEMPLATE_DIR } from 'src/constants';
 
 /**
  * Mailing service for sending mails with handlebars template
@@ -42,11 +43,7 @@ export class MailTransmitterService {
     context: DefaultContext,
   ): Promise<any> {
     const defaultMessageTemplatePath = join(
-      process.cwd(),
-      'src',
-      'modules',
-      'mail-transmitter',
-      'mail-templates',
+      MAIL_TEMPLATE_DIR,
       'default_mail_template.hbs',
     );
     if (!fs.existsSync(defaultMessageTemplatePath)) {
@@ -81,12 +78,7 @@ export class MailTransmitterService {
     if (!templatePath.match(/.(hbs)$/i)) {
       templatePath = templatePath + '.hbs';
     }
-    const customMessageTemplatePath = join(
-      process.cwd(),
-      'templates',
-      'mail-templates',
-      templatePath,
-    );
+    const customMessageTemplatePath = join(MAIL_TEMPLATE_DIR, templatePath);
     if (!fs.existsSync(customMessageTemplatePath)) {
       this.logger.error('Mail template not found: ', customMessageTemplatePath);
       throw new InternalServerErrorException();

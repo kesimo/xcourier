@@ -4,6 +4,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { join } from 'path';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { EmailConfiguration } from 'config/config.model';
+import { MAIL_TEMPLATE_DIR } from 'src/constants';
 @Injectable()
 export class MailConfigService implements MailerOptionsFactory {
   mailConfigurations: EmailConfiguration;
@@ -44,13 +45,7 @@ export class MailConfigService implements MailerOptionsFactory {
       //load templates by path and apply handlebars adapter
       // (used for replace text and url in email template)
       template: {
-        dir: join(
-          process.cwd(),
-          'src',
-          'modules',
-          'mail-transmitter',
-          'mail-templates/',
-        ),
+        dir: MAIL_TEMPLATE_DIR,
         adapter: new HandlebarsAdapter(undefined, {
           inlineCssEnabled: true,
         }),
