@@ -23,7 +23,6 @@ export class AppService {
   constructor(private configService: ConfigService) {}
 
   getReportStatus(): IReportStatus {
-    //console.log(this.serverConfiguration.api_key ?? 'null');
     return {
       status: 'up',
       os: {

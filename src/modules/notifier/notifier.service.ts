@@ -28,14 +28,14 @@ export class NotifierService {
   async sendMailNotification(id: string, data: any): Promise<IResponseStatus> {
     const config = this.configurationService.getEndpointConfiguration(id);
     if (!config) {
-      throw new NotFoundException();
+      throw new NotFoundException(`configuration not found (id: ${id})`);
     }
     if (config.receivers.length === 0) {
-      throw new ConflictException();
+      throw new ConflictException('no receivers found');
     }
     //convert JSON Body to message parsed in html email template
     const rawData = data ? JSON.stringify(data) : 'No data received';
-    if (!config.template && !config.template_path) {
+    if (/* !config.template && */ !config.template_path) {
       //convert JSON Body to array for table visualizations
       const parsedJsonBody = ObjectConverter.convertToOneLevelArray(data);
       return this.mailService
@@ -103,25 +103,38 @@ export class NotifierService {
   }
 
   //helpers
-  async getPreferredData(id: string, body: any, query: any): Promise<any> {
+  async mergeContextData(id: string, body: any, query: any): Promise<any> {
     const config = this.configurationService.getEndpointConfiguration(id);
+    let mergedData = null;
     switch (config.payload_type) {
       case PayloadType.onlyJson:
-        return body;
+        mergedData = body;
+        break;
       case PayloadType.onlyQuery:
-        return query;
+        mergedData = query;
+        break;
       case PayloadType.onlyMessage:
-        return null;
+        mergedData = null;
+        break;
       case PayloadType.preferJson:
-        return ObjectConverter.mergeDefaultValues(query, body);
+        mergedData = ObjectConverter.mergeDefaultValues(query, body);
+        break;
       case PayloadType.preferQuery:
-        return ObjectConverter.mergeDefaultValues(body, query);
+        mergedData = ObjectConverter.mergeDefaultValues(body, query);
+        break;
       default:
         //prefer json is the default case if nothing is set
         if (Object.keys(body).length === 0 && Object.keys(query).length === 0) {
-          return null;
-        } else return ObjectConverter.mergeDefaultValues(query, body);
+          mergedData = null;
+        } else mergedData = ObjectConverter.mergeDefaultValues(query, body);
         break;
     }
+    if (config.template_defaults) {
+      return ObjectConverter.mergeDefaultValues(
+        config.template_defaults,
+        mergedData,
+      );
+    }
+    return mergedData;
   }
 }
