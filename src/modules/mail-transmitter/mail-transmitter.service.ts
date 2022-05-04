@@ -46,13 +46,9 @@ export class MailTransmitterService {
       MAIL_TEMPLATE_DIR,
       'default_mail_template.hbs',
     );
-    if (!fs.existsSync(defaultMessageTemplatePath)) {
-      this.logger.error(
-        'Mail template not found: ',
-        defaultMessageTemplatePath,
-      );
-      throw new InternalServerErrorException();
-    }
+
+    await this.checkFileExistSync(defaultMessageTemplatePath);
+
     const rawMailText = `Message: ${context.message} ---- Data: ${context.raw_data} ---- at: ${context.timestamp}`;
     this.logger.log('sending mail to ' + receiver);
     return this.mailerService
@@ -79,10 +75,9 @@ export class MailTransmitterService {
       templatePath = templatePath + '.hbs';
     }
     const customMessageTemplatePath = join(MAIL_TEMPLATE_DIR, templatePath);
-    if (!fs.existsSync(customMessageTemplatePath)) {
-      this.logger.error('Mail template not found: ', customMessageTemplatePath);
-      throw new InternalServerErrorException();
-    }
+
+    await this.checkFileExists(customMessageTemplatePath);
+
     const rawMailText = `Message: ${context.message} ---- Data: ${context.raw_data} ---- at: ${context.timestamp}`;
     //feature: check if variables from template are given; else place default value
     const fullfilledData = data;
@@ -104,5 +99,24 @@ export class MailTransmitterService {
       .catch((err) => {
         throw err;
       });
+  }
+
+  //helpers
+  async checkFileExists(filePath: string): Promise<any> {
+    const fileIsAvaliable = await fs.promises
+      .readFile(filePath)
+      .then(() => true)
+      .catch(() => false);
+    if (!fileIsAvaliable) {
+      this.logger.error('Mail template not found: ', filePath);
+      throw new InternalServerErrorException();
+    }
+  }
+  //for performance comparison only
+  checkFileExistSync(filePath: string): void {
+    if (!fs.existsSync(filePath)) {
+      this.logger.error('Mail template not found: ', filePath);
+      throw new InternalServerErrorException();
+    }
   }
 }
