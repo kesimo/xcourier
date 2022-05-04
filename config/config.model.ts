@@ -8,6 +8,7 @@ import {
   IsNotEmpty,
   IsNotEmptyObject,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   IsUrl,
@@ -102,10 +103,12 @@ export class EndpointConfiguration {
   @IsOptional()
   template_path?: string;
 
-  //use if template should be defined in yaml configuration as string
+  //todo evaluate feature: use if template should be defined in yaml configuration as string
+  /*
   @IsString()
   @IsOptional()
   template?: string;
+  */
 
   //send simple message with default styling
   @IsString()
@@ -136,6 +139,10 @@ export class EndpointConfiguration {
   @IsString()
   @IsOptional()
   linked_url_tag?: string;
+
+  @IsObject()
+  @IsOptional()
+  template_defaults: any;
 }
 
 export class Configuration {

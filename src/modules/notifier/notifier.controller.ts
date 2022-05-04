@@ -29,7 +29,7 @@ export class NotifierController {
   @UseGuards(AuthGuard('basic'))
   async sendNotificationByGetQuery(@Query() query): Promise<IResponseStatus> {
     if (!query.id) throw new NotFoundException('Endpoint id is missing');
-    const data = await this.notifierService.getPreferredData(
+    const data = await this.notifierService.mergeContextData(
       query.id,
       null,
       query,
@@ -51,7 +51,7 @@ export class NotifierController {
     @Query() query: any,
   ): Promise<IResponseStatus> {
     if (!query.id) throw new NotFoundException('Endpoint id is missing');
-    const data = await this.notifierService.getPreferredData(
+    const data = await this.notifierService.mergeContextData(
       query.id,
       null,
       query,
@@ -78,7 +78,7 @@ export class NotifierController {
     @Body() body: any,
     @Query() query: any,
   ): Promise<IResponseStatus> {
-    const data = await this.notifierService.getPreferredData(id, body, query);
+    const data = await this.notifierService.mergeContextData(id, body, query);
     const status = this.notifierService.sendMailNotification(id, data);
     return status;
   }
@@ -100,7 +100,7 @@ export class NotifierController {
     @Body() body: any,
     @Query() query: any,
   ): Promise<IResponseStatus> {
-    const data = await this.notifierService.getPreferredData(id, body, query);
+    const data = await this.notifierService.mergeContextData(id, body, query);
     const status = this.notifierService.sendMailNotification(id, data);
     return status;
   }
@@ -122,7 +122,7 @@ export class NotifierController {
     @Body() body: any,
     @Query() query: any,
   ): Promise<IResponseStatus> {
-    const data = await this.notifierService.getPreferredData(id, body, query);
+    const data = await this.notifierService.mergeContextData(id, body, query);
     const status = this.notifierService.sendMailNotification(id, data);
     return status;
   }
