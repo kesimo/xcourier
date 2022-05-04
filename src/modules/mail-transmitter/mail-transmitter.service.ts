@@ -85,7 +85,6 @@ export class MailTransmitterService {
       { internal: context }, //tonote: internal.raw_data, internal.timestamp, internal.subject, internal.message
       fullfilledData,
     );
-    console.log(transformedData);
     this.logger.log('sending mail to ' + receiver);
     return this.mailerService
       .sendMail({

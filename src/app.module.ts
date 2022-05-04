@@ -52,11 +52,6 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     MailerModule.forRootAsync({
       imports: [ConfigurationModule],
-      // useFactory: (config: ConfigurationService) => {
-      //   const mailConfigService = new MailConfigService(config);
-      //   console.log(mailConfigService.createMailerOptions());
-      //   return mailConfigService.createMailerOptions as MailerOptions;
-      // },
       useClass: MailConfigService,
       inject: [ConfigurationService],
     }),
