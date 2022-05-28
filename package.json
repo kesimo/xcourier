@@ -1,8 +1,8 @@
 {
-  "name": "hook-notifier-be",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "name": "xcourier",
+  "version": "0.0.2",
+  "description": "Simple and highly configurable REST api for sending mail notifications with templates",
+  "author": "KSEDev - K. S. Eder",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
