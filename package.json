@@ -4,7 +4,7 @@
   "description": "Simple and highly configurable REST api for sending mail notifications with templates",
   "author": "KSEDev - K. S. Eder",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
