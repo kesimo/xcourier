@@ -19,6 +19,17 @@
 
 ### Configuration
 
+#### Global configuration environment variables
+
+| Property            | type    | example             |
+| ------------------- | ------- | ------------------- |
+| debug               | boolean | true                |
+| port                | number  | 3000 (default)      |
+| url_prefix          | string  | /sub (default: '/') |
+| basic_auth_username | string  |                     |
+| basic_auth_password | string  |                     |
+| api_key             | string  | _in progress_       |
+
 #### smtp configuration properties (email)
 
 | Property     | type           | example                                      |
