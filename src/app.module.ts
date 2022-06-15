@@ -24,13 +24,13 @@ import { AuthModule } from './modules/auth/auth.module';
           format: winston.format.combine(
             winston.format.timestamp(),
             winston.format.ms(),
-            nestWinstonModuleUtilities.format.nestLike('Notifier', {
+            nestWinstonModuleUtilities.format.nestLike('Xcourier', {
               prettyPrint: true,
             }),
           ),
         }),
         new winston.transports.File({
-          filename: './notifier.log',
+          filename: './xcourier.log',
           format: winston.format.combine(
             winston.format.timestamp(),
             winston.format.ms(),
