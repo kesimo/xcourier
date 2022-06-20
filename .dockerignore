@@ -5,3 +5,8 @@ README.md
 docs
 dist
 .github
+notifier.log
+run.sh
+Dockerfile
+.env
+.eslintrc.js

@@ -4,7 +4,10 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Configuration, EmailConfiguration } from 'config/config.model';
+import {
+  Configuration,
+  EmailConfiguration,
+} from 'src/modules/configuration/config.model';
 import { MailerService } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import * as fs from 'fs';

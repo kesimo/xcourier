@@ -3,7 +3,7 @@ import { MailerOptions, MailerOptionsFactory } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
 import { ConfigurationService } from '../configuration/configuration.service';
-import { EmailConfiguration } from 'config/config.model';
+import { EmailConfiguration } from 'src/modules/configuration/config.model';
 import { MAIL_TEMPLATE_DIR } from 'src/constants';
 @Injectable()
 export class MailConfigService implements MailerOptionsFactory {

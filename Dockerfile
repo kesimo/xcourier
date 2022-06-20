@@ -21,8 +21,10 @@ COPY package*.json ./
 
 RUN npm install --only=production
 
-COPY . .
+#COPY . .
 
-COPY --from=development /usr/src/app/dist ./dist
+COPY --from=development /usr/src/app/dist ./xcourier
 
-CMD ["node", "dist/src/main"]
+#ENTRYPOINT [ "bash" ]
+
+CMD ["node", "xcourier/main"]

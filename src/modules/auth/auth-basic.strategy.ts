@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationService } from '../configuration/configuration.service';
-import { ServerConfiguration } from 'config/server-config.model';
+import { ServerConfiguration } from 'src/modules/configuration/server-config.model';
 
 @Injectable()
 export class BasicStrategy extends PassportStrategy(Strategy) {

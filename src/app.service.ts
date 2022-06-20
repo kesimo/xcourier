@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Configuration } from 'config/config.model';
-import { ServerConfiguration } from 'config/server-config.model';
+import { Configuration } from 'src/modules/configuration/config.model';
+import { ServerConfiguration } from 'src/modules/configuration/server-config.model';
 import * as os from 'os';
 export interface IReportStatus {
   status: 'up' | 'down' | 'unknown';

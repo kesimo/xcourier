@@ -1,7 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { EmailConfiguration, EndpointConfiguration } from 'config/config.model';
-import { ServerConfiguration } from 'config/server-config.model';
+import {
+  EmailConfiguration,
+  EndpointConfiguration,
+} from 'src/modules/configuration/config.model';
+import { ServerConfiguration } from 'src/modules/configuration/server-config.model';
 
 @Injectable()
 export class ConfigurationService {

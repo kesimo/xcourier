@@ -4,8 +4,11 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { Configuration, PayloadType } from 'config/config.model';
-import { ServerConfiguration } from 'config/server-config.model';
+import {
+  Configuration,
+  PayloadType,
+} from 'src/modules/configuration/config.model';
+import { ServerConfiguration } from 'src/modules/configuration/server-config.model';
 import { ObjectConverter } from 'src/utils/object-converter.util';
 import { ConfigurationService } from '../configuration/configuration.service';
 import { MailTransmitterService } from '../mail-transmitter/mail-transmitter.service';

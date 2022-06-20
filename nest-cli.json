@@ -4,8 +4,6 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "assets": [
-      { "include": "../config/*.yaml", "outDir": "./dist/config" },
-      { "include": "../config/*.yml", "outDir": "./dist/config" },
       {
         "include": "../templates/**/*.hbs",
         "outDir": "./dist/templates"

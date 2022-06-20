@@ -13,12 +13,18 @@ export default () => {
   let config = null;
   try {
     config = yaml.load(
-      readFileSync(join(__dirname, YAML_CONFIG_FILENAME + '.yaml'), 'utf8'),
+      readFileSync(
+        join(__dirname, '../../config', YAML_CONFIG_FILENAME + '.yaml'),
+        'utf8',
+      ),
     ) as Record<string, any>;
   } catch (e) {
     try {
       config = yaml.load(
-        readFileSync(join(__dirname, YAML_CONFIG_FILENAME + '.yml'), 'utf8'),
+        readFileSync(
+          join(__dirname, '../../config', YAML_CONFIG_FILENAME + '.yml'),
+          'utf8',
+        ),
       ) as Record<string, any>;
     } catch (e) {
       Logger.error('Error while loading configuration file. Does it exist?');
