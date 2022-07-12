@@ -2,20 +2,96 @@
 
 <center> <h2>Email Notification Api</h2> </center>
 <center> Fast set-up and highly customizable based on NodeJs </center>
+<center> Supports custom handlebars templates and many more features</center>
 
-<h2 style="color: blue">Configuration</h2>
+### Usage Example
 
-<h2 style="color: blue">Templates</h2>
+#### Configuration
 
-### Default template
+```yaml
+email:
+  #smtp_url: ''
+  host: smtp.example.com
+  port: 2528
+  ignore_tls: false
+  secure: false
+  require_tls: true
+  user: ***
+  password: ***
+  default_from: test@from.com
+  default_name: 'Example from'
+endpoints:
+  - id: 'example-id'
+    receivers: [alex.sampler@testmail.com, ann@company.example]
+    payload_type: only_json
+    message: 'New Notification from SystemX' # default 'new notificaton from id'
+    linked_url: https://example.com
+    linked_url_tag: example-action
+    subject: 'Alert from SystemX'
+```
 
-### Message only
+#### Request
 
-### Custom Templates
+_note: GET,POST,PUT methods are allowed_
+_for more information see [Request-Types](#Request-Types)_
 
-<h2 style="color: blue">Docker Set-Up</h2>
+```bash
+curl --location --request POST 'http://localhost:3001/example-id' \
+--header 'Authorization: Basic ********' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+"user": "systemRoot",
+"id": 733599,
+"Action": "get_overview",
+"time": 1650949483,
+"error_message": "TypeError: Cannot read properties of undefined",
+"stacktrace": [
+"at Object. (/home/cg/root/2523129/main.js:20:11)"
+],
+"hash": "00000000000000000007fc4fdf669fed9c64c210f48b2911c8c206e25bbf413b"
+}'
+```
 
-<h2 style="color: blue">Usage example</h2>
+#### Output
+
+![Alt text](docs/images/screenshot-mail-template.png?raw=true 'Example-Template')
+
+### Docker Set-Up
+
+**docker run**
+
+```bash
+docker run -it --rm -v $(PWD)/config:/usr/src/app/xcourier/config \
+  -p 3001:3001 \
+  -e URL_PREFIX="/api" \
+  -e PORT=3001 \
+  -e DEBUG=false -e BASIC_AUTH_USERNAME="root" \
+  -e BASIC_AUTH_PASSWORD="root" \
+  -e TZ="Europe/Berlin" \
+  --name xcourier-demo \
+  kesim0/xcourier:latest
+```
+
+**docker-compose**
+
+```bash
+version: '3.3'
+services:
+    xcourier:
+        container_name: xcourier-demo
+        image: 'kesim0/xcourier:latest'
+        volumes:
+            - '$(PWD)/config:/usr/src/app/xcourier/config'
+        ports:
+            - '3001:3001'
+        environment:
+            - URL_PREFIX=/api
+            - PORT=3001
+            - DEBUG=false
+            - BASIC_AUTH_USERNAME=root
+            - BASIC_AUTH_PASSWORD=root
+            - TZ=Europe/Berlin
+```
 
 ### Configuration
 
@@ -77,36 +153,30 @@ email:
 endpoints:
   - id: 'minimal'
     receivers: [test@mail1.de, test2@mail2.de]
-    subject: 'Alert from 123'
-  - id: 'prefere-json1' #first defined id qould be used in case of duplicate ids
+    subject: 'Alert from minimal'
+  - id: 'prefere-json1' #first defined id would be used in case of duplicate ids
     receivers: [test456@mail1.de, test2@mail2.de] # without "'"
-    payload_type: prefer_json #default is prefere_json ; possible values ->   preferQuery = 'prefer_query',prefer_json','only_query','only_json','only_message'
-    subject: 'Alert from 456'
+    #default: prefere_json
+    #possible values: 'prefer_query',prefer_json','only_query','only_json','only_message'
+    payload_type:
+      prefer_json
+      # default 'new notificaton from {id}'
+    message: 'New message from json example'
+    linked_url: https://example.com #optional
+    linked_url_tag: example-action #optional
+    subject: 'Json Example send'
   - id: 'json-only1'
-    receivers: [kev.ed.simon@gmail.com, lg2xspeed@googlemail.com]
+    receivers: [alex.sampler@testmail.com, ann@company.example]
     payload_type: only_json
     message: 'testmessage -> json only' # default 'new notificaton from id'
     linked_url: https://github.com
     linked_url_tag: git
     subject: 'Alert from 1 sub'
-  - id: 'message-only1'
-    receivers: [kev.ed.simon@gmail.com, lg2xspeed@googlemail.com]
-    payload_type: only_message
-    message: 'testmessage -> only message'
-    linked_url: https://github.com
-    linked_url_tag: git
-    subject: 'Alert from 1 sub'
-  - id: 'only-query1'
-    receivers: [kev.ed.simon@gmail.com, lg2xspeed@googlemail.com]
-    payload_type: only_query
-    message: 'testmessage'
-    linked_url: https://github.com
-    linked_url_tag: git
-    subject: 'Alert from 1 sub'
   - id: 'template-defaults1'
-    receivers: [kev.ed.simon@gmail.com, lg2xspeed@googlemail.com]
+    receivers: [alex.sampler@testmail.com, ann@company.example]
     message: 'testmessage'
-    subject: 'Alert from 2 sub (second)'
+    subject: 'Message from defaults'
+    # Default values overridden by payload
     template_defaults:
       user: 'unknown'
       property: 123123
@@ -114,20 +184,52 @@ endpoints:
         - id: '1'
         - id: '2'
   - id: 'custom1'
-    receivers: [kev.ed.simon@gmail.com, lg2xspeed@googlemail.com]
+    receivers: [alex.sampler@testmail.com, ann@company.example]
+    # sub-paths are allowed -> 'sub/custom_message.hbs'
     template_path: 'custom_message.hbs'
     message: 'custom template usage one'
-    subject: 'Alert from 1custom template'
-  - id: 'custom2'
-    receivers: [kev.ed.simon@gmail.com, lg2xspeed@googlemail.com]
-    template_path: 'sub/custom_message.hbs'
-    message: 'custom template usage two'
-    subject: 'Alert from 2custom template sub'
+    subject: 'Alert from custom template'
 ```
 
-### Request
+### Request-types
 
-### Output
+- Possible Types: GET, POST, PUT
+- Possible Payload-Types: Json, Query parameters
+- additional URL Prefix can be defined as environment variable: `URL_PREFIX`
+- additional Basic-Auth can be defined as environment variable: `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` _(default: admin:admin)_
+- additional API-Key can be defined as environment variable: `API_KEY` _(*in progress*)_
+
+**Payload Type**
+
+- `prefer_query`: merges json and query parameters but overwrite json props with query properties if key is equal
+- `prefer_json`: merges json and query parameters but overwrite query props with json properties if key is equal
+- `only_query`: only query parameters will be used
+- `only_json`: only json payload is used (no query parameters)
+- `only_message`: ignores payload and uses message instead
+
+**Query-Parameters**
+
+```bash
+curl --location --request POST 'http://localhost:3000/{id}?param1=1&param2=value' \
+--header 'Authorization: Basic ****'
+```
+
+### Custom Templates
+
+It is possible to use custom handlebars templates. In this case some values are
+reserved for the template:
+
+- `internal.id`: id of the message
+- `internal.message`: message title
+- `internal.raw_data`: raw data of the message
+- `internal.timestamp`: timestamp of the message (send time)
+- `internal.subject`: subject of the message
+
+The `*.hbs` files must be located in the `./templates/mail-templates` folder.
+or in case of docker usage in the `/templates` directory. It is possible to use
+sub-paths for the templates.
+
+For more Information about how to use handlebars templates please see the [Handlebars](https://handlebarsjs.com/guide/expressions.html) documentation.
 
 ## Roadmap
 
