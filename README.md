@@ -8,6 +8,8 @@
 
 #### Configuration
 
+_configuration.yml_
+
 ```yaml
 email:
   #smtp_url: ''
@@ -59,6 +61,7 @@ curl --location --request POST 'http://localhost:3001/example-id' \
 ### Docker Set-Up
 
 **docker run**
+_note:_ the local /config directory should contain a **configuration.yml** file.
 
 ```bash
 docker run -it --rm -v $(PWD)/config:/usr/src/app/xcourier/config \
