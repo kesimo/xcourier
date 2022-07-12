@@ -1,9 +1,9 @@
 {
   "name": "xcourier",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Simple and highly configurable REST api for sending mail notifications with templates",
   "author": "KSEDev - K. S. Eder",
-  "private": true,
+  "private": false,
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
