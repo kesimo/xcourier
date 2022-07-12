@@ -41,5 +41,10 @@ export default () => {
   if (errors.length > 0) {
     throw new Error('Failed to load yaml configuration... \n' + errors);
   }
+  logger.log(
+    'Configuration loaded successfully. Detected ' +
+      config.endpoints.length +
+      ' endpoints.',
+  );
   return config;
 };

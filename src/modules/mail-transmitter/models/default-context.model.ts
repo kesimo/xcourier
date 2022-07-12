@@ -1,3 +1,4 @@
+import { any } from 'joi';
 import { MailContext } from './context.model';
 
 export class DefaultContext implements MailContext {
@@ -7,7 +8,9 @@ export class DefaultContext implements MailContext {
   raw_data: any = null;
   cleaned_data:
     | Array<{ key: string; value: string | string[]; isEven: boolean }>
-    | string = null;
+    | string
+    | null;
+
   linked_url = null;
   linked_url_tag = null;
   timestamp: Date = null;

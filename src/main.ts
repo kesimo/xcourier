@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { AppModule } from './app.module';
+import { DEFAULT_PORT } from './constants';
 
 async function bootstrap() {
   const logger = new Logger('MAIN');
@@ -21,8 +22,10 @@ async function bootstrap() {
     next();
   });
 
-  await app.listen(process.env.PORT).then(() => {
-    logger.log('Started listening on port ' + process.env.PORT);
+  await app.listen(process.env.PORT || DEFAULT_PORT).then(() => {
+    logger.log(
+      'Started listening on port ' + (process.env.PORT || DEFAULT_PORT),
+    );
     if (process.env.URL_PREFIX) {
       logger.log('Global prefix set to ' + process.env.URL_PREFIX);
     }
