@@ -236,6 +236,11 @@ sub-paths for the templates.
 
 For more Information about how to use handlebars templates please see the [Handlebars](https://handlebarsjs.com/guide/expressions.html) documentation.
 
+### Server Information
+
+- get at /report entry point
+  `curl --location --request GET 'http://localhost:3000/report'`
+
 ## Roadmap
 
 - [ ] only env set-up (w/o \*.yaml)
